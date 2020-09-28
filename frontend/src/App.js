@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import VideoAnnotation from './components/VideoAnnotation'
 
-
 export default () => {
   const [tracks, setTracks] = useState([])
   const [labels, setLabels] = useState([])
   const [annotations, setAnnotations] = useState([])
   const [fps, setFps] = useState(0)
 
-  useEffect(()=>{
+  // Execute after first render
+  useEffect(() => {
     getTracks()
     getFps()
     pullImages()
@@ -27,6 +27,7 @@ export default () => {
     setFps(fps)
   }
 
+  //Set Labels and Annotations
 
   const pullImages = async () => {
     const labelsReq = await fetch('http://localhost:5000/getLabels')
@@ -34,13 +35,10 @@ export default () => {
     setLabels(labels)
     const req = await fetch('http://localhost:5000/getLost')
     const data = await req.json()
-    setAnnotations(data)   
-    
+    setAnnotations(data)
   }
 
-
-
-  return(
+  return (
     <div>
       <VideoAnnotation
         annotations={annotations}

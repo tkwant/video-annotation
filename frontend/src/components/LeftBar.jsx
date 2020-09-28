@@ -1,19 +1,18 @@
 import React from 'react'
-import {Button, Col} from 'reactstrap'
-
-
+import { Button, Col } from 'reactstrap'
 
 const LeftBar = ({
-    boxOnClick, 
-    isBoxSelected, 
-    polygonOnClick, 
-    isPolygonSelected, 
-    pointOnClick, 
-    isPointSelected,
-    exportAnnos}) =>{
-    return(
-        <>
-        <Col xs="1" style={{ textAlign: 'center' }}>
+  boxOnClick,
+  isBoxSelected,
+  polygonOnClick,
+  isPolygonSelected,
+  pointOnClick,
+  isPointSelected,
+  exportAnnos,
+}) => {
+  return (
+    <>
+      <Col xs="1" style={{ textAlign: 'center' }}>
         <Button
           onClick={boxOnClick}
           color={isBoxSelected ? 'warning' : 'primary'}
@@ -37,8 +36,8 @@ const LeftBar = ({
         </Button>
         <Button onClick={exportAnnos}>Save Annotations</Button>
       </Col>
-      </>
-    )
+    </>
+  )
 }
 
 export default LeftBar

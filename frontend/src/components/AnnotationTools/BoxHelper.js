@@ -35,7 +35,7 @@ export const onMouseMove = ({
   }
 }
 
-
+// When Rect is in drawing mode then draw the rect live
 const followMouseInDrawingMode = ({ setRects, rects, cursorpt }) => {
     let rect = {...rects[rects.length - 1]}
     const deltaX = cursorpt.x - rect.clickedX
@@ -76,7 +76,7 @@ export const onMouseDown = ({ shapeId, isNewAnno, setRects, rects, cursorpt, end
 
 }
 
-
+// Drag the rect
 const drag = ({mouseEnteredBBoxId, rects, setRects, movementX, movementY})=> {
   const newRects = rects.map((rect,i)=>{
     if(i === mouseEnteredBBoxId){
@@ -87,7 +87,7 @@ const drag = ({mouseEnteredBBoxId, rects, setRects, movementX, movementY})=> {
 })
 setRects(newRects)
 }
-
+// Select the rect
 export const select=({rects, setRects, boxIndex})=>{
   const newRects = rects.map((rect, i)=>{
       if(i == boxIndex){
@@ -126,20 +126,18 @@ const calculateNewRect = (rect,  deltaX, deltaY) =>{
   }
   return rect
 }
-
+// Drag one Point of Rect
 const dragPoint= ({mouseEnteredBBoxPoint, rects, setRects, movementX, movementY}) =>{
   const newRects = rects.map((rect,i)=>{
       if(i === mouseEnteredBBoxPoint.boxIndex){
         switch(mouseEnteredBBoxPoint.pointIndex){
           case 0:
-            
             rect.x = rect.x + movementX
             rect.y = rect.y + movementY
             rect.width = rect.width - movementX
             rect.height = rect.height - movementY
             break
           case 1:
-            // rect.x = rect.x + movementX
             rect.y = rect.y + movementY
             rect.width = rect.width + movementX
             rect.height = rect.height - movementY
@@ -147,13 +145,9 @@ const dragPoint= ({mouseEnteredBBoxPoint, rects, setRects, movementX, movementY}
           case 2:
             rect.x = rect.x + movementX
             rect.width = rect.width - movementX
-
-            // rect.y = rect.y + movementY
-            // rect.width = rect.width + movementX
             rect.height = rect.height + movementY
             break
           case 3:
-            // rect.y = rect.y + movementY
             rect.width = rect.width + movementX
             rect.height = rect.height + movementY
             break

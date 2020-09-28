@@ -9,7 +9,6 @@ const Point = ({
   onMouseLeavePoint,
   setPointIdDropdownVisible
 }) => {
-  // const [mouseEntered, setMouseEntered] = useState(false)
 
     return (
       <g>

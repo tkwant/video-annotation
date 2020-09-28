@@ -1,7 +1,5 @@
 import React from 'react'
 
 export default () => {
-    return(
-        <h1 style={{textAlign:'center'}}>Video Annotation</h1>
-    )
+  return <h1 style={{ textAlign: 'center' }}>Video Annotation</h1>
 }

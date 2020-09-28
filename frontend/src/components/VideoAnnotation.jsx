@@ -13,7 +13,6 @@ import RightBar from './RightBar'
 import {transformFromLost, transformToLost} from './lostTransformer'
 
 function App(props) {
-  // const [containerRef, { x, y, width, height, top, right, bottom, left }] = useMeasure();
   const containerRef = useRef(null)
   const lastFrameIndex = useRef(0)
   const size = useWindowSize()
@@ -33,6 +32,8 @@ function App(props) {
   const [imageHeight, setImageHeight] = useState()
   const [isLabelsSelected, setIsLabelsSelected] = useState(true)
 
+  // Convert Annotations from LOST Format to absolute Pixel Values
+  // In LOST a point in the middle of screen has x and y value 0.5
   const setAnnos = async () =>{
     const imageSize = await getImageSize(props.annotations[0].image.url)
     const h = (size.height - offsetTop) * 0.7
@@ -62,7 +63,7 @@ function App(props) {
 
 
 
-
+  // Called after every Frameswitch to save annotations
   const saveAnnotations = ({ rects, polygons, points }) => {
     const copiedAnnotations = [...allAnnotations]
     copiedAnnotations[lastFrameIndex.current] = {
@@ -75,14 +76,18 @@ function App(props) {
     lastFrameIndex.current = currentFrameIndex
   }
 
+
   const updateTracks = (updatedTracks) => {
     setTracks(updatedTracks)
   }
 
+  // Calculate the offset to the top of the screen.
+  // With offsetTop the height of the components can be calulated
   useEffect(() => {
     setOffsetTop(containerRef.current.offsetTop)
   }, [])
 
+  // called every time play button isPressed
   useEffect(() => {
     if (props.fps && allFrames && isPlay) {
       const intervald = setInterval(next, 1000 / props.fps)
@@ -118,7 +123,7 @@ function App(props) {
   }
 
  
-
+  // Get the image width, height and scale
   const getImageSize = (url) => {
     const img = new Image()
     img.src = url
@@ -135,6 +140,7 @@ function App(props) {
 
 
 
+  // Select Annotationtools
   const polygonOnClick = () => {
     setIsPolygonSelected(!isPolygonSelected)
     setIsBoxSelected(false)
@@ -151,12 +157,14 @@ function App(props) {
     setIsPolygonSelected(false)
   }
 
+  // Unselect all Annotationtools
   const unSelectAll = () => {
     setIsBoxSelected(false)
     setIsPolygonSelected(false)
     setIsPointSelected(false)
   }
 
+  // Change current Frame with Slider
   const handleSliderChange = (index) => {
     setCurrentFrameIndex(index)
   }

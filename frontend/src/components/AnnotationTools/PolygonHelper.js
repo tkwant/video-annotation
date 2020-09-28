@@ -18,26 +18,26 @@ export const onMouseMove = ({
   mouseEnteredPolygonPoint,
   mouseEnteredPolygonId,
   movementX,
-  movementY
+  movementY,
 }) => {
+  // If Polygon is in drawing mode then show the polygon live
   if (isPolygonDrawingMode) {
-    // inside Drawing Mode
     followMouseInDrawingMode({
-        polygons,
-        setPolygons,
-        cursorpt
+      polygons,
+      setPolygons,
+      cursorpt,
     })
-
   } else if (isDragPolygonPoint) {
+    // Drag one Point of Polygon
     dragPoint({
-        mouseEnteredPolygonPoint,
-        polygons,
-        setPolygons,
-        movementX,
-        movementY
+      mouseEnteredPolygonPoint,
+      polygons,
+      setPolygons,
+      movementX,
+      movementY,
     })
-  }   
-  else if (isDragPolygon) {
+  } else if (isDragPolygon) {
+    // Drag the Polygon
     drag({
       mouseEnteredPolygonId,
       polygons,
@@ -45,33 +45,27 @@ export const onMouseMove = ({
       movementX,
       movementY,
     })
-}
+  }
   //
 }
 
-
-const followMouseInDrawingMode = ({
-  polygons,
-  setPolygons,
-  cursorpt,
-}) => {
-    const polygonsCopy = [...polygons]
-    const polygon = polygonsCopy[polygons.length - 1]
-    const pointsCopy = [...polygon.points]
-    polygon.points = pointsCopy
-    polygon.points[pointsCopy.length - 1][1] = cursorpt.y
-    polygon.points[pointsCopy.length - 1][0] = cursorpt.x
-    polygonsCopy[polygonsCopy.length - 1] = polygon
-    setPolygons(polygonsCopy)
-
+const followMouseInDrawingMode = ({ polygons, setPolygons, cursorpt }) => {
+  const polygonsCopy = [...polygons]
+  const polygon = polygonsCopy[polygons.length - 1]
+  const pointsCopy = [...polygon.points]
+  polygon.points = pointsCopy
+  polygon.points[pointsCopy.length - 1][1] = cursorpt.y
+  polygon.points[pointsCopy.length - 1][0] = cursorpt.x
+  polygonsCopy[polygonsCopy.length - 1] = polygon
+  setPolygons(polygonsCopy)
 }
 
 const drag = ({
   mouseEnteredPolygonId,
   polygons,
   setPolygons,
-    movementX,
-    movementY,
+  movementX,
+  movementY,
 }) => {
   const newPolygons = polygons.map((polygon, i) => {
     let points = polygon.points
@@ -90,7 +84,7 @@ const drag = ({
 }
 
 const dragPoint = ({
-mouseEnteredPolygonPoint,
+  mouseEnteredPolygonPoint,
   polygons,
   setPolygons,
   movementX,
@@ -126,14 +120,21 @@ export const select = ({ polygons, setPolygons, polygonInsideIndex }) => {
   setPolygons(newPolygons)
 }
 
-export const onMouseDown = ({ shapeId, isNewAnno, setPolygons, polygons, cursorpt }) => {
+export const onMouseDown = ({
+  shapeId,
+  isNewAnno,
+  setPolygons,
+  polygons,
+  cursorpt,
+}) => {
+  // When it is not in drawing Mode then create a new Polygon
   if (isNewAnno.current) {
-      isNewAnno.current= false
-      shapeId.current += 1  
+    isNewAnno.current = false
+    shapeId.current += 1
     setPolygons([
       ...polygons,
       {
-        id: shapeId.current ,
+        id: shapeId.current,
         points: [
           [cursorpt.x, cursorpt.y],
           [cursorpt.x, cursorpt.y],

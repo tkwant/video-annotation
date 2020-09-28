@@ -2,6 +2,7 @@ import React from 'react'
 import { Row } from 'reactstrap'
 import Annotations from './Annotations'
 
+// Preload all Images. When the Images are not preloaded playing the video is not smooth
 var Preload = require('react-preload').Preload
 
 const Center = ({

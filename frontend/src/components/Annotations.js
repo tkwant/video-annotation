@@ -9,7 +9,6 @@ import Box from './AnnotationTools/Box'
 import Polygon from './AnnotationTools/Polygon'
 import Point from './AnnotationTools/Point'
 
-
 export default (props) => {
   const shapeId = useRef(0)
   const isNewAnno = useRef(false)
@@ -28,13 +27,12 @@ export default (props) => {
   const [mouseEnteredBBoxId, setMouseEnteredBBoxId] = useState()
   const [mouseEnteredPointPointId, setMouseEnteredPointPointId] = useState()
 
-
   const [mouseEnteredPolygonPoint, setMouseEnteredPolygonPoint] = useState()
   const [mouseEnteredBBoxPoint, setMouseEnteredBBoxPoint] = useState()
 
   const [polygonIdDropdownVisible, setPolygonIdDropdownVisible] = useState()
   const [rectIdDropdownVisible, setRectIdDropdownVisible] = useState()
-  const [pointIdDropdownVisible,setPointIdDropdownVisible] = useState()
+  const [pointIdDropdownVisible, setPointIdDropdownVisible] = useState()
 
   const endAnno = () => {
     isNewAnno.current = true
@@ -50,13 +48,15 @@ export default (props) => {
     setPolygons(filteredPolygons)
     const filteredRects = rects.filter((rect) => !rect.selected)
     setRects(filteredRects)
-    const filteredPoints = points.filter((_, i) => i != mouseEnteredPointPointId)
+    const filteredPoints = points.filter(
+      (_, i) => i != mouseEnteredPointPointId
+    )
     setPoints(filteredPoints)
   }
 
-  useEffect(()=>{
-    if(props.annotations.index != props.lastFrameIndex){
-      props.saveAnnotations({rects, polygons, points})
+  useEffect(() => {
+    if (props.annotations.index != props.lastFrameIndex) {
+      props.saveAnnotations({ rects, polygons, points })
     }
     setRects(props.annotations.rects)
     setPolygons(props.annotations.polygons)
@@ -97,9 +97,23 @@ export default (props) => {
         cursorpt,
       })
     } else if (isBoxSelected) {
-      BoxHelper.onMouseDown({ shapeId,isNewAnno, setRects, rects, cursorpt, endAnno })
-    }else if(isPointSelected){
-      PointHelper.onMouseDown({shapeId, isNewAnno, setPoints, points, cursorpt, endAnno})
+      BoxHelper.onMouseDown({
+        shapeId,
+        isNewAnno,
+        setRects,
+        rects,
+        cursorpt,
+        endAnno,
+      })
+    } else if (isPointSelected) {
+      PointHelper.onMouseDown({
+        shapeId,
+        isNewAnno,
+        setPoints,
+        points,
+        cursorpt,
+        endAnno,
+      })
     }
   }
 
@@ -110,7 +124,8 @@ export default (props) => {
       svg.current.getScreenCTM().inverse()
     )
     const mousePressed = e.buttons === 1
-    const isPolygonDrawingMode = polygons.length && !isNewAnno.current && isPolygonSelected
+    const isPolygonDrawingMode =
+      polygons.length && !isNewAnno.current && isPolygonSelected
     const isDragPolygon = !isNaN(mouseEnteredPolygonId) && mousePressed
     const isDragPolygonPoint = mouseEnteredPolygonPoint && mousePressed
     if (isPolygonDrawingMode || isDragPolygon || isDragPolygonPoint) {
@@ -126,13 +141,14 @@ export default (props) => {
         mouseEnteredPolygonPoint,
         mouseEnteredPolygonId,
         movementX,
-        movementY
+        movementY,
       })
-    } 
-    const isBBoxDrawingMode = rects.length && !isNewAnno.current && isBoxSelected
+    }
+    const isBBoxDrawingMode =
+      rects.length && !isNewAnno.current && isBoxSelected
     const isDragBBox = !isNaN(mouseEnteredBBoxId) && mousePressed
     const isDragBBoxPoint = mouseEnteredBBoxPoint && mousePressed
-    if(isBBoxDrawingMode || isDragBBox || isDragBBoxPoint){
+    if (isBBoxDrawingMode || isDragBBox || isDragBBoxPoint) {
       const movementX = e.movementX
       const movementY = e.movementY
       BoxHelper.onMouseMove({
@@ -145,12 +161,12 @@ export default (props) => {
         rects,
         setRects,
         movementX,
-        movementY    
+        movementY,
       })
     }
 
     const isDragPoint = !isNaN(mouseEnteredPointPointId) && mousePressed
-    if(isDragPoint){
+    if (isDragPoint) {
       const movementX = e.movementX
       const movementY = e.movementY
       PointHelper.drag({
@@ -158,26 +174,26 @@ export default (props) => {
         setPoints,
         movementX,
         movementY,
-        mouseEnteredPointPointId
+        mouseEnteredPointPointId,
       })
     }
   }
   const onMouseEnterPoint = ({ shapeIndex, pointIndex, annoMode }) => {
     //Polygon
-    if(annoMode==='polygon'){
+    if (annoMode === 'polygon') {
       setMouseEnteredPolygonPoint({ polygonIndex: shapeIndex, pointIndex })
-    }else if(annoMode==='bbox'){
+    } else if (annoMode === 'bbox') {
       //BOX
-      setMouseEnteredBBoxPoint({boxIndex: shapeIndex, pointIndex})
-    }else if(annoMode==='point'){
+      setMouseEnteredBBoxPoint({ boxIndex: shapeIndex, pointIndex })
+    } else if (annoMode === 'point') {
       //Point
       setMouseEnteredPolygonId()
       setMouseEnteredBBoxId()
-      PolygonHelper.select({polygons, setPolygons})
-      BoxHelper.select({rects, setRects})
+      PolygonHelper.select({ polygons, setPolygons })
+      BoxHelper.select({ rects, setRects })
 
       setMouseEnteredPointPointId(shapeIndex)
-    }else{
+    } else {
       throw new Error('unknown annotation mode')
     }
   }
@@ -195,23 +211,22 @@ export default (props) => {
     setMouseEnteredPolygonId(polygonInsideIndex)
     setMouseEnteredBBoxId()
     // unselect all Boxes
-    BoxHelper.select({rects, setRects})
+    BoxHelper.select({ rects, setRects })
     PolygonHelper.select({ polygons, setPolygons, polygonInsideIndex })
   }
 
   // console.log('rects')
   // console.log(rects)
-  const onMouseEnterBox = (boxIndex)=>{
-
+  const onMouseEnterBox = (boxIndex) => {
     setMouseEnteredBBoxId(boxIndex)
     setMouseEnteredPolygonId()
     //Unselect all Polygons
-    PolygonHelper.select({polygons, setPolygons})
-    BoxHelper.select({rects, setRects, boxIndex})
+    PolygonHelper.select({ polygons, setPolygons })
+    BoxHelper.select({ rects, setRects, boxIndex })
   }
   return (
     <div>
-      <Dropdown 
+      <Dropdown
         polygons={polygons}
         setPolygons={setPolygons}
         rects={rects}
@@ -225,9 +240,9 @@ export default (props) => {
         setPolygonIdDropdownVisible={setPolygonIdDropdownVisible}
         setRectIdDropdownVisible={setRectIdDropdownVisible}
         tracks={props.tracks}
-        labels={props.labels} 
+        labels={props.labels}
         isLabelsSelected={props.isLabelsSelected}
-        />
+      />
       <svg
         ref={svg}
         onMouseDown={onMouseDown}
@@ -258,7 +273,7 @@ export default (props) => {
         {rects.map((rect, i) => (
           <Box
             setRectIdDropdownVisible={setRectIdDropdownVisible}
-            onMouseEnterPoint= {onMouseEnterPoint}
+            onMouseEnterPoint={onMouseEnterPoint}
             onMouseEnterBox={onMouseEnterBox}
             onMouseLeavePoint={onMouseLeavePoint}
             boxIndex={i}
@@ -268,14 +283,14 @@ export default (props) => {
           />
         ))}
 
-        {points.map((point,i)=>(
+        {points.map((point, i) => (
           <Point
             setPointIdDropdownVisible={setPointIdDropdownVisible}
             onMouseEnterPoint={onMouseEnterPoint}
             onMouseLeavePoint={onMouseLeavePoint}
             point={point}
             shapeIndex={i}
-            isBig={mouseEnteredPointPointId== i}
+            isBig={mouseEnteredPointPointId == i}
             key={`${i}`}
           />
         ))}

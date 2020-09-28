@@ -4,11 +4,6 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  Badge,
-  InputGroup,
-  InputGroupAddon,
-  Input,
-  InputGroupText,
 } from 'reactstrap'
 
 export default ({
@@ -30,8 +25,8 @@ export default ({
 }) => {
   const [dropdownX, setDropdownX] = useState(0)
   const [dropdownY, setDropdownY] = useState(0)
-  // console.log('rects')
-  // console.log(rects)
+
+  // When select dropdown item
   const onSelect = (e) => {
     const label = e.currentTarget.getAttribute('label')
     const labelId = Number(e.currentTarget.getAttribute('label_id'))
@@ -158,55 +153,3 @@ export default ({
     </div>
   )
 }
-
-// import React from 'react'
-// import { Dropdown, Ref, Popup, Header } from 'semantic-ui-react'
-// import 'semantic-ui-css/semantic.min.css'
-
-// export default ({ isOpen, dropdownX, dropdownY, labels, setIsDropDownOpen, onSelectLabel }) => {
-//   const dropdownLabels = labels.map(label=>(
-//     {
-//       key: label.id,
-//       text: label.label,
-//       value: label.value
-//     }
-//   ))
-
-//   const onSelect = (e,item)=>{
-//     console.log(e)
-//     console.log(item)
-//   }
-//   return (
-//     <div style={{ position: 'absolute', dropdownX: dropdownX, dropdownY: dropdownY, zIndex: 2000 }}>
-//      {isOpen && (
-//          <Dropdown
-//          placeholder='Select Country'
-//          fluid
-//          search
-//          icon="search"
-//          selection
-//          onChange={onSelect}
-//          options={dropdownLabels}
-//  />
-//  <Dropdown
-//     // multiple={this.props.multilabels}
-//     search
-//     selection
-//     closeOnChange
-//     icon="search"
-//     options={dropdownLabels}
-//     placeholder="Enter label"
-//     tabIndex={0}
-//     // onKeyDown= {e => this.onKeyDown(e)}
-//     value={'lbl'}
-//     onChange={onSelect}
-//     style={{ opacity: 0.8 }}
-//     // disabled={true}
-//     open={isOpen}
-//   />
-//       )
-
-//       }
-//     </div>
-//   )
-// }
